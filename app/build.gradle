@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
     defaultConfig {
-        applicationId "com.ylab.ballsberg"
+        applicationId "com.ylab.ballsberg.pro"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
