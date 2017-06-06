@@ -5,13 +5,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -58,6 +62,7 @@ public class FullscreenActivity extends AppCompatActivity {
     */
     //private View mControlsView;
     private WebView mWebView;
+    private InterstitialAd mInterstitialAd;
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
         public void run() {
@@ -96,8 +101,19 @@ public class FullscreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fullscreen);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-8217481143192443/8238403015");
 
-        mVisible = true;
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+                Log.d("hahaha", "ad closed");
+            }
+        });
+        requestNewInterstitial();
+
+        //mVisible = true;
         //mControlsView = findViewById(R.id.fullscreen_content_controls);
         //mContentView = findViewById(R.id.fullscreen_content);
 
@@ -136,6 +152,25 @@ public class FullscreenActivity extends AppCompatActivity {
         AdView mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+        showInterAd();
+    }
+
+    private void requestNewInterstitial() {
+        //Log.d("hahaha", AdRequest.DEVICE_ID_EMULATOR);
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        mInterstitialAd.loadAd(adRequest);
+    }
+
+    public void showInterAd() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            Log.d("hahaha", "ad 111 ready");
+        }
+        else{
+            Log.d("hahaha", "ad 222 not ready");
+        }
     }
 
     @Override
@@ -190,4 +225,26 @@ public class FullscreenActivity extends AppCompatActivity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+
+        showInterAd();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+
+        showInterAd();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();  // Always call the superclass method first
+
+        showInterAd();
+    }
+
 }
