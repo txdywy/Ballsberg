@@ -16,6 +16,8 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.ylab.ballsberg2.R;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -101,8 +103,9 @@ public class FullscreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fullscreen);
+        MobileAds.initialize(this, "ca-app-pub-1461460404188784~8742284280");
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-8217481143192443/8238403015");
+        mInterstitialAd.setAdUnitId("ca-app-pub-1461460404188784/6714886747");
 
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
